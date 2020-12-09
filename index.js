@@ -26,7 +26,7 @@ module.exports = class extends window.casthub.card.action {
      */
     async prepareProps() {
         let def = '';
-        const raw = this.ws.send('getAllScenes');
+        const raw = await this.ws.send('getAllScenes');
         const scenes = raw.reduce((obj, scene) => {
             obj[scene.id] = {
                 name: scene.name,
