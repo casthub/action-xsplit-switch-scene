@@ -29,7 +29,7 @@ module.exports = class extends window.casthub.card.action {
         const raw = await this.ws.send('getAllScenes');
         const scenes = raw.reduce((obj, scene) => {
             obj[scene.id] = {
-                name: scene.name,
+                text: scene.name,
             };
 
             return obj;
