@@ -1,30 +1,23 @@
-module.exports = class extends window.casthub.card.action {
+import { PropList, PropType } from '@casthub/types';
 
-    /**
-     * @return {Promise}
-     */
-    async mounted() {
+export default class extends window.casthub.card.action<{
+    scene: string;
+}> {
+    async mounted(): Promise<void> {
         const { id } = this.identity;
 
-        // Open the WebSocket Connection to XSplit Broadcaster.
         this.ws = await window.casthub.ws(id);
 
         await super.mounted();
     }
 
-    /**
-     * @param {Object} input
-     */
-    async run(input) {
+    async run(): Promise<void> {
         this.ws.send('setActiveScene', {
             id: this.props.scene,
         });
     }
 
-    /**
-     * @return {Promise}
-     */
-    async prepareProps() {
+    async prepareProps(): Promise<PropList> {
         let def = '';
         const raw = await this.ws.send('getAllScenes');
         const scenes = raw.reduce((obj, scene) => {
@@ -37,12 +30,11 @@ module.exports = class extends window.casthub.card.action {
 
         return {
             scene: {
-                type: 'select',
+                type: PropType.Select,
                 label: 'Scene',
                 default: def,
                 options: scenes,
             },
         };
     }
-
-};
+}
